@@ -15,7 +15,7 @@ import java.util.List;
 
 public class FileHelper {
 
-	private static final String CHARSETDEFAULT = "UTF-8";
+	public static final String CHARSETDEFAULT = "UTF-8";
 
 	public String readToEnd(String pathName) throws IOException {
 		try (InputStream stream = new FileInputStream(pathName)) {

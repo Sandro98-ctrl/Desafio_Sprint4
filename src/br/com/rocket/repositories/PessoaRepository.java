@@ -33,10 +33,8 @@ public class PessoaRepository {
 			String pessoaLinha = PessoaConverter.pessoaToLinha(p);
 
 			for (String linha : linhas) {
-
-				if (linhas.equals(pessoaLinha)) {
+				if (linha.equals(pessoaLinha))
 					continue;
-				}
 
 				sb.append(linha);
 				sb.append(System.lineSeparator());
@@ -50,7 +48,7 @@ public class PessoaRepository {
 	}
 
 	public List<Pessoa> getAll() {
-		return pessoas;
+		return this.pessoas;
 	}
 
 	public Pessoa getPessoaByCodigo(int codigo) {

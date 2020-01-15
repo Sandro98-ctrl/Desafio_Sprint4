@@ -11,15 +11,13 @@ import br.com.rocket.repositories.PessoaRepository;
 public class Sistema {
 
 	private int opcao;
-	private FileHelper fileHelper;
 	private ConsoleHelper consoleHelper;
 	private Scanner scanner;
 	private PessoaRepository pessoaRepository;
 
 	public Sistema() {
-		fileHelper = new FileHelper();
 		consoleHelper = new ConsoleHelper();
-		scanner = new Scanner(System.in);
+		scanner = new Scanner(System.in, FileHelper.CHARSETDEFAULT);
 		pessoaRepository = new PessoaRepository();
 	}
 
@@ -41,7 +39,7 @@ public class Sistema {
 
 	private void loadCabecalho() {
 		try {
-			System.out.println(fileHelper.readToEnd("Compasso ART ASCII"));
+			System.out.println(new FileHelper().readToEnd("Compasso ART ASCII"));
 			System.out.println();
 		} catch (Exception e) {
 			consoleHelper.erro("Template do Cabeçalho não Encontrado!");
