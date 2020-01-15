@@ -1,7 +1,7 @@
 package br.com.rocket.entities;
 
 public class Pessoa {
-
+	
 	private int codigo;
 	private String nome;
 	private int idade;

@@ -3,12 +3,10 @@ package br.com.rocket;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.naming.directory.InvalidAttributesException;
-
-import br.com.rocket.converters.PessoaConverter;
 import br.com.rocket.entities.Pessoa;
 import br.com.rocket.helpers.ConsoleHelper;
 import br.com.rocket.helpers.FileHelper;
+import br.com.rocket.repositories.PessoaRepository;
 
 public class Sistema {
 
@@ -16,11 +14,13 @@ public class Sistema {
 	private FileHelper fileHelper;
 	private ConsoleHelper consoleHelper;
 	private Scanner scanner;
+	private PessoaRepository pessoaRepository;
 
 	public Sistema() {
 		fileHelper = new FileHelper();
 		consoleHelper = new ConsoleHelper();
 		scanner = new Scanner(System.in);
+		pessoaRepository = new PessoaRepository();
 	}
 
 	public void start() {
@@ -111,16 +111,16 @@ public class Sistema {
 			System.out.print("Informe o Endereço: ");
 			pessoa.setEndereco(scanner.nextLine());
 
-			validarDados(pessoa);
-			fileHelper.append(PessoaConverter.pessoaToLinha(pessoa));
+			this.pessoaRepository.validar(pessoa);
+			this.pessoaRepository.adicionar(pessoa);
 		} catch (Exception e) {
-			consoleHelper.erro("Erro ao cadastrar: " + e.getMessage());
+			this.consoleHelper.erro("Erro ao cadastrar: " + e.getMessage());
 		}
 	}
 
 	private void mostrarPessoas() {
 		try {
-			List<Pessoa> lista = PessoaConverter.linhasToPessoas(fileHelper.readLines());
+			List<Pessoa> lista = this.pessoaRepository.getAll();
 			lista.forEach(p -> System.out.println(p));
 		} catch (Exception e) {
 			consoleHelper.erro("Erro ao mostrar: " + e.getMessage());
@@ -131,35 +131,10 @@ public class Sistema {
 		try {
 			System.out.print("Informe o Código: ");
 			int codigo = Integer.parseInt(scanner.nextLine());
-			List<String> linhas = fileHelper.readLines();
-			StringBuilder sb = new StringBuilder();
-
-			for (String linha : linhas) {
-				try (Scanner scn = new Scanner(linha.trim())) {
-					scn.useDelimiter(",");
-
-					if (codigo == scn.nextInt()) {
-						continue;
-					}
-				}
-
-				sb.append(linha);
-				sb.append(System.lineSeparator());
-			}
-
-			fileHelper.write(sb.toString());
+			Pessoa p = this.pessoaRepository.getPessoaByCodigo(codigo);
+			this.pessoaRepository.excluir(p);
 		} catch (Exception e) {
 			consoleHelper.erro("Erro ao excluir: " + e.getMessage());
-		}
-	}
-
-	private void validarDados(Pessoa pessoa) throws Exception {
-		List<Pessoa> pessoas = PessoaConverter.linhasToPessoas(fileHelper.readLines());
-
-		for (Pessoa p : pessoas) {
-			if (p.getCodigo() == pessoa.getCodigo()) {
-				throw new InvalidAttributesException("Código já existente");
-			}
 		}
 	}
 }

@@ -10,13 +10,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileHelper {
 
-	private static final String FILENAME = "pessoas.txt";
 	private static final String CHARSETDEFAULT = "UTF-8";
 
 	public String readToEnd(String pathName) throws IOException {
@@ -27,11 +25,11 @@ public class FileHelper {
 		}
 	}
 
-	public List<String> readLines() throws IOException {
+	public List<String> readLines(String pathName) throws IOException {
 		List<String> linhas = new ArrayList<>();
-		createIfDoesntExists();
+		createIfDoesntExists(pathName);
 
-		try (InputStream is = new FileInputStream(FILENAME)) {
+		try (InputStream is = new FileInputStream(pathName)) {
 			try (InputStreamReader isr = new InputStreamReader(is, CHARSETDEFAULT)) {
 				try (BufferedReader br = new BufferedReader(isr)) {
 					String linha;
@@ -46,8 +44,8 @@ public class FileHelper {
 		return linhas;
 	}
 
-	public void write(String texto) throws IOException {
-		try (OutputStream os = new FileOutputStream(FILENAME)) {
+	public void write(String texto, String pathName) throws IOException {
+		try (OutputStream os = new FileOutputStream(pathName)) {
 			try (OutputStreamWriter osw = new OutputStreamWriter(os, CHARSETDEFAULT)) {
 				try (BufferedWriter bw = new BufferedWriter(osw)) {
 					bw.write(texto);
@@ -56,8 +54,8 @@ public class FileHelper {
 		}
 	}
 
-	public void append(String texto) throws IOException {
-		try (OutputStream os = new FileOutputStream(FILENAME, true)) {
+	public void append(String texto, String pathName) throws IOException {
+		try (OutputStream os = new FileOutputStream(pathName, true)) {
 			try (OutputStreamWriter osw = new OutputStreamWriter(os, CHARSETDEFAULT)) {
 				try (BufferedWriter bw = new BufferedWriter(osw)) {
 					bw.write(texto);
@@ -67,8 +65,8 @@ public class FileHelper {
 		}
 	}
 
-	private boolean createIfDoesntExists() throws IOException {
-		File file = new File(FILENAME);
+	private boolean createIfDoesntExists(String pathName) throws IOException {
+		File file = new File(pathName);
 
 		if (file.exists()) {
 			return true;
