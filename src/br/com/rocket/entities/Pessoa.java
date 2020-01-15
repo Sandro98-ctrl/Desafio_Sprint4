@@ -1,10 +1,6 @@
 package br.com.rocket.entities;
 
-import java.io.Serializable;
-
-public class Pessoa implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class Pessoa {
 
 	private int codigo;
 	private String nome;

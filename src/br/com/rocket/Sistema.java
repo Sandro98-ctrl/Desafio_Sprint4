@@ -37,7 +37,7 @@ public class Sistema {
 	public void end() {
 		scanner.close();
 		consoleHelper.message("Até Mais!");
-		System.exit(-1);
+		System.exit(0);
 	}
 
 	private void loadCabecalho() {
@@ -59,6 +59,8 @@ public class Sistema {
 		sb.append(System.lineSeparator());
 		sb.append("Opção 2 - Imprimir Pessoas Cadastradas");
 		sb.append(System.lineSeparator());
+		sb.append("Opção 3 - Excluir Pessoa");
+		sb.append(System.lineSeparator());
 		sb.append("Opção 0 - Sair do Programa");
 		sb.append(System.lineSeparator());
 		sb.append("-----------------------------------");
@@ -72,9 +74,9 @@ public class Sistema {
 			opcao = Integer.parseInt(scanner.nextLine());
 		} catch (Exception e) {
 			opcao = -1;
-			consoleHelper.erro("Formato Incorreto");
+			consoleHelper.erro("Formato incorreto");
 		}
-		
+
 		System.out.println("---------------------------");
 	}
 
@@ -89,9 +91,9 @@ public class Sistema {
 		case 2:
 			mostrarPessoas();
 			break;
-		// case 3:
-		// excluirPessoa();
-		// break;
+		case 3:
+			excluirPessoa();
+			break;
 		default:
 			consoleHelper.erro("Valor de operação inválido");
 			break;
@@ -113,17 +115,42 @@ public class Sistema {
 			validarDados(pessoa);
 			fileHelper.append(pessoa.getInfo());
 		} catch (Exception e) {
-			consoleHelper.erro("Erro no cadastro: " + e.getMessage());
+			consoleHelper.erro("Erro ao cadastrar: " + e.getMessage());
 		}
 	}
 
 	private void mostrarPessoas() {
 		try {
 			List<Pessoa> lista = getPessoasFromFile();
-			// lista.sort();
 			lista.forEach(p -> System.out.println(p));
 		} catch (Exception e) {
 			consoleHelper.erro("Erro ao mostrar: " + e.getMessage());
+		}
+	}
+
+	private void excluirPessoa() {
+		try {
+			System.out.print("Informe o Código: ");
+			int codigo = Integer.parseInt(scanner.nextLine());
+			List<String> linhas = fileHelper.readLines();
+			StringBuilder sb = new StringBuilder();
+
+			for (String linha : linhas) {
+				try (Scanner scn = new Scanner(linha.trim())) {
+					scn.useDelimiter(",");
+
+					if (codigo == scn.nextInt()) {
+						continue;
+					}
+				}
+
+				sb.append(linha);
+				sb.append(System.lineSeparator());
+			}
+
+			fileHelper.write(sb.toString());
+		} catch (Exception e) {
+			consoleHelper.erro("Erro ao excluir: " + e.getMessage());
 		}
 	}
 
