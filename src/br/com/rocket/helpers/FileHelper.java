@@ -16,8 +16,8 @@ import java.util.List;
 
 public class FileHelper {
 
-	private final String fileName = "pessoas.txt";
-	private final String charSetDefault = StandardCharsets.UTF_8.toString();
+	private static final String FILENAME = "pessoas.txt";
+	private static final String CHARSETDEFAULT = "UTF-8";
 
 	public String readToEnd(String pathName) throws IOException {
 		try (InputStream stream = new FileInputStream(pathName)) {
@@ -31,8 +31,8 @@ public class FileHelper {
 		List<String> linhas = new ArrayList<>();
 		createIfDoesntExists();
 
-		try (InputStream is = new FileInputStream(fileName)) {
-			try (InputStreamReader isr = new InputStreamReader(is, charSetDefault)) {
+		try (InputStream is = new FileInputStream(FILENAME)) {
+			try (InputStreamReader isr = new InputStreamReader(is, CHARSETDEFAULT)) {
 				try (BufferedReader br = new BufferedReader(isr)) {
 					String linha;
 
@@ -47,8 +47,8 @@ public class FileHelper {
 	}
 
 	public void write(String texto) throws IOException {
-		try (OutputStream os = new FileOutputStream(fileName)) {
-			try (OutputStreamWriter osw = new OutputStreamWriter(os, charSetDefault)) {
+		try (OutputStream os = new FileOutputStream(FILENAME)) {
+			try (OutputStreamWriter osw = new OutputStreamWriter(os, CHARSETDEFAULT)) {
 				try (BufferedWriter bw = new BufferedWriter(osw)) {
 					bw.write(texto);
 				}
@@ -57,8 +57,8 @@ public class FileHelper {
 	}
 
 	public void append(String texto) throws IOException {
-		try (OutputStream os = new FileOutputStream(fileName, true)) {
-			try (OutputStreamWriter osw = new OutputStreamWriter(os, charSetDefault)) {
+		try (OutputStream os = new FileOutputStream(FILENAME, true)) {
+			try (OutputStreamWriter osw = new OutputStreamWriter(os, CHARSETDEFAULT)) {
 				try (BufferedWriter bw = new BufferedWriter(osw)) {
 					bw.write(texto);
 					bw.write(System.lineSeparator());
@@ -68,7 +68,7 @@ public class FileHelper {
 	}
 
 	private boolean createIfDoesntExists() throws IOException {
-		File file = new File(fileName);
+		File file = new File(FILENAME);
 
 		if (file.exists()) {
 			return true;

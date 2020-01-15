@@ -55,12 +55,9 @@ public class Pessoa {
 		this.endereco = endereco;
 	}
 
-	public String getInfo() {
-		return String.join(",", String.valueOf(getCodigo()), getNome(), String.valueOf(getIdade()), getEndereco());
-	}
-
 	@Override
 	public String toString() {
-		return String.format("Código: %d, Nome: %s, Idade: %d, Endereço: %s", codigo, nome, idade, endereco);
+		return String.format("Código: %d, Nome: %s, Idade: %d, Endereço: %s", this.codigo, this.nome, this.idade,
+				this.endereco);
 	}
 }

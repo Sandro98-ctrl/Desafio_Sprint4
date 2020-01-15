@@ -1,12 +1,11 @@
 package br.com.rocket;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import javax.naming.directory.InvalidAttributesException;
 
+import br.com.rocket.converters.PessoaConverter;
 import br.com.rocket.entities.Pessoa;
 import br.com.rocket.helpers.ConsoleHelper;
 import br.com.rocket.helpers.FileHelper;
@@ -113,7 +112,7 @@ public class Sistema {
 			pessoa.setEndereco(scanner.nextLine());
 
 			validarDados(pessoa);
-			fileHelper.append(pessoa.getInfo());
+			fileHelper.append(PessoaConverter.pessoaToLinha(pessoa));
 		} catch (Exception e) {
 			consoleHelper.erro("Erro ao cadastrar: " + e.getMessage());
 		}
@@ -121,7 +120,7 @@ public class Sistema {
 
 	private void mostrarPessoas() {
 		try {
-			List<Pessoa> lista = getPessoasFromFile();
+			List<Pessoa> lista = PessoaConverter.linhasToPessoas(fileHelper.readLines());
 			lista.forEach(p -> System.out.println(p));
 		} catch (Exception e) {
 			consoleHelper.erro("Erro ao mostrar: " + e.getMessage());
@@ -155,31 +154,12 @@ public class Sistema {
 	}
 
 	private void validarDados(Pessoa pessoa) throws Exception {
-		List<Pessoa> pessoas = getPessoasFromFile();
+		List<Pessoa> pessoas = PessoaConverter.linhasToPessoas(fileHelper.readLines());
 
 		for (Pessoa p : pessoas) {
 			if (p.getCodigo() == pessoa.getCodigo()) {
 				throw new InvalidAttributesException("Código já existente");
 			}
 		}
-	}
-
-	private List<Pessoa> getPessoasFromFile() throws IOException {
-		List<String> linhas = fileHelper.readLines();
-		List<Pessoa> lista = new ArrayList<>();
-
-		for (String linha : linhas) {
-			try (Scanner scn = new Scanner(linha.trim())) {
-				scn.useDelimiter(",");
-				Pessoa p = new Pessoa();
-				p.setCodigo(scn.nextInt());
-				p.setNome(scn.next().trim());
-				p.setIdade(scn.nextInt());
-				p.setEndereco(scn.next().trim());
-				lista.add(p);
-			}
-		}
-
-		return lista;
 	}
 }
