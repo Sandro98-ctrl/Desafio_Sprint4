@@ -18,12 +18,18 @@ public class PessoaRepository {
 
 	public PessoaRepository() {
 		this.fileHelper = new FileHelper();
+		this.consoleHelper = new ConsoleHelper();
 		this.pessoas = getAllInterno();
 	}
 
 	public void adicionar(Pessoa p) throws IOException {
 		this.fileHelper.append(PessoaConverter.pessoaToLinha(p), FILENAME);
 		this.pessoas.add(p);
+	}
+
+	public void excluir(int codigo) throws InvalidObjectException {
+		Pessoa p = getPessoaByCodigo(codigo);
+		excluir(p);
 	}
 
 	public void excluir(Pessoa p) {
@@ -51,13 +57,13 @@ public class PessoaRepository {
 		return this.pessoas;
 	}
 
-	public Pessoa getPessoaByCodigo(int codigo) {
+	public Pessoa getPessoaByCodigo(int codigo) throws InvalidObjectException {
 		for (Pessoa pessoa : this.pessoas) {
 			if (codigo == pessoa.getCodigo())
 				return pessoa;
 		}
 
-		return null;
+		throw new InvalidObjectException("Código não encontrado");
 	}
 
 	public void validar(Pessoa pessoa) throws InvalidObjectException {

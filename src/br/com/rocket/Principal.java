@@ -6,5 +6,6 @@ public class Principal {
 
 		Sistema sistema = new Sistema();
 		sistema.start();
+		
 	}
 }

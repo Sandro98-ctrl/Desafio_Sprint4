@@ -129,8 +129,7 @@ public class Sistema {
 		try {
 			System.out.print("Informe o Código: ");
 			int codigo = Integer.parseInt(scanner.nextLine());
-			Pessoa p = this.pessoaRepository.getPessoaByCodigo(codigo);
-			this.pessoaRepository.excluir(p);
+			this.pessoaRepository.excluir(codigo);
 		} catch (Exception e) {
 			consoleHelper.erro("Erro ao excluir: " + e.getMessage());
 		}
