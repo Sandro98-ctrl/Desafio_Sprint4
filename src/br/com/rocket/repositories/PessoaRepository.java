@@ -28,7 +28,7 @@ public class PessoaRepository {
 	}
 
 	public void excluir(int codigo) throws InvalidObjectException {
-		Pessoa p = getPessoaByCodigo(codigo);
+		Pessoa p = getByCodigo(codigo);
 		excluir(p);
 	}
 
@@ -57,7 +57,7 @@ public class PessoaRepository {
 		return this.pessoas;
 	}
 
-	public Pessoa getPessoaByCodigo(int codigo) throws InvalidObjectException {
+	public Pessoa getByCodigo(int codigo) throws InvalidObjectException {
 		for (Pessoa pessoa : this.pessoas) {
 			if (codigo == pessoa.getCodigo())
 				return pessoa;
