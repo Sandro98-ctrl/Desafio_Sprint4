@@ -2,6 +2,7 @@ package br.com.rocket.repositories;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;
+import java.util.Collections;
 import java.util.List;
 
 import br.com.rocket.converters.PessoaConverter;
@@ -54,7 +55,7 @@ public class PessoaRepository {
 	}
 
 	public List<Pessoa> getAll() {
-		return this.pessoas;
+		return Collections.unmodifiableList(this.pessoas);
 	}
 
 	public Pessoa getByCodigo(int codigo) throws InvalidObjectException {
